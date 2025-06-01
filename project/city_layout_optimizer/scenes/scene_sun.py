@@ -1,5 +1,4 @@
 import bpy
-import bmesh
 from mathutils import Vector
 import random
 import math

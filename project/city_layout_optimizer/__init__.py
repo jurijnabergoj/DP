@@ -3,9 +3,9 @@ import bpy
 import numpy as np
 from scipy.optimize import minimize
 
-from .scene_utils import load_road_data, get_park_info, get_building_footprint
-from .optimizer import objective_combined
-from .geometry_utils import point_to_line_distance, buildings_overlap
+from project.city_layout_optimizer.optimizer_module.scene_utils import load_road_data, get_park_info, get_building_footprint
+from project.city_layout_optimizer.optimizer_module.optimizer import objective_combined
+from project.city_layout_optimizer.optimizer_module.geometry_utils import point_to_line_distance, buildings_overlap
 
 bl_info = {
     "name": "City Layout Optimizer",
