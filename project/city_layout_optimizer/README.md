@@ -50,6 +50,7 @@ You can install the add-on by following these instructions:
 
 
 ### 📁 Project Structure
+```bash
 city-layout-optimizer/
 ├── scripts/
 │   ├── city_optimizer.py               # Non-differentiable optimizer
@@ -63,3 +64,4 @@ city-layout-optimizer/
 │   └──scene_ring.py                    # Prebuilt test scene
 │   └──scene_sun.py                     # Prebuilt test scene
 └── README.md
+```
