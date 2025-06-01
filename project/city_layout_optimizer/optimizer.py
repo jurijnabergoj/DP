@@ -1,6 +1,5 @@
 import numpy as np
 import math
-from .geometry_utils import point_to_line_distance, buildings_overlap
 
 
 def distance_building_to_park_edge(building_pos, building_size, park_center, park_radius, road_info):

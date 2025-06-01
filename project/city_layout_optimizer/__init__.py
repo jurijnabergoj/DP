@@ -1,7 +1,6 @@
 import math
 import bpy
 import numpy as np
-from mathutils import Vector
 from scipy.optimize import minimize
 
 from .scene_utils import load_road_data, get_park_info, get_building_footprint
@@ -117,16 +116,16 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
         constraints = {'type': 'ineq', 'fun': constraint_func}
 
         # Method 1: COBYLA
-        """result = minimize(
+        result = minimize(
             lambda x: objective_combined(x, building_sizes, park_center, park_radius, road_info, IDEAL_PARK_GAP),
             x0,
             method='COBYLA',
             bounds=bounds,
             constraints=constraints,
             options={'disp': True, 'maxiter': 1000, 'rhobeg': 1.0}
-        )"""
+        )
 
-        # Method 2: SLSQP
+        """# Method 2: SLSQP
         result = minimize(
             lambda x: objective_combined(x, building_sizes, park_center, park_radius, road_info, IDEAL_PARK_GAP),
             x0,
@@ -134,17 +133,17 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
             bounds=bounds,
             constraints=constraints,
             options={'disp': True, 'maxiter': 1000, 'ftol': 1e-8}
-        )
+        )"""
 
-        # Method 3: trust-constr
-        # result = minimize(
-        #     lambda x: objective_combined(x, building_sizes, park_center, park_radius, road_info, IDEAL_PARK_GAP),
-        #     x0,
-        #     method='trust-constr',
-        #     bounds=bounds,
-        #     constraints=constraints,
-        #     options={'verbose': 1, 'maxiter': 500, 'gtol': 1e-6}
-        # )
+        """# Method 3: trust-constr
+        result = minimize(
+            lambda x: objective_combined(x, building_sizes, park_center, park_radius, road_info, IDEAL_PARK_GAP),
+            x0,
+            method='trust-constr',
+            bounds=bounds,
+            constraints=constraints,
+            options={'verbose': 1, 'maxiter': 500, 'gtol': 1e-6}
+        )"""
 
         if result.success:
             for i, obj in enumerate(buildings):

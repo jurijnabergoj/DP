@@ -1,11 +1,9 @@
 import bpy
-from mathutils import Vector
 from scipy.optimize import minimize
 import numpy as np
 import math
 import json
 
-# blender_optimizer_plugin/__init__.py
 bl_info = {
     "name": "Enhanced City Layout Optimizer",
     "author": "Jurij Nabergoj",
@@ -165,19 +163,16 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
         building_sizes = [get_building_footprint(b) for b in buildings]
         num_buildings = len(buildings)
 
-        IDEAL_PARK_GAP = 1.0  # We want buildings to be 1.0 unit away from the park road
+        IDEAL_PARK_GAP = 1.0  # Buildings need to be 1.0 unit away from the park road
 
         def objective(x):
             total_squared_error = 0
             for i in range(num_buildings):
                 pos_2d = [x[2 * i], x[2 * i + 1]]
-                # Get the raw distance, which can be negative if inside the park road area
                 raw_distance = distance_building_to_park_edge(
                     pos_2d, building_sizes[i], park_center, park_radius, road_info
                 )
-                # Calculate the error from our ideal gap
                 error = raw_distance - IDEAL_PARK_GAP
-                # The total "cost" is the sum of the squared errors
                 total_squared_error += error ** 2
             return total_squared_error
 
@@ -197,14 +192,14 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
                 pos_i = building_positions[i]
                 size_i = building_sizes[i]
 
-                # --- (1) Distance to park edge (like before) ---
+                # 1) Distance to park edge
                 raw_distance = distance_building_to_park_edge(
                     pos_i, size_i, park_center, park_radius, road_info
                 )
                 error = raw_distance - IDEAL_PARK_GAP
                 total_distance_error += error ** 2
 
-                # --- (2) Sunlight exposure (prefer unblocked from south) ---
+                # 2) Sunlight exposure (prefer unblocked from south)
                 for j in range(num_buildings):
                     if i == j:
                         continue
@@ -217,7 +212,7 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
                         if dist < 10:
                             sunlight_penalty += (10 - dist) ** 2  # soft penalty
 
-                # --- (3) Spread penalty (avoid crowding, even beyond constraints) ---
+                # 3) Spread penalty (avoid crowding, even beyond constraints)
                 for j in range(i + 1, num_buildings):
                     pos_j = building_positions[j]
                     dist = np.linalg.norm(pos_i - pos_j)
@@ -301,18 +296,18 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
 
         print("Starting optimization with a stable objective function...")
 
-        """result = minimize(
+        result = minimize(
             objective_combined, x0, method='SLSQP', bounds=bounds, constraints=constraints,
             options={'disp': True, 'maxiter': 1000, 'ftol': 1e-8}  # ftol lowered for higher precision
-        )"""
-        result = minimize(
+        )
+        """result = minimize(
             objective_combined,
             x0,
             method='COBYLA',  # Change method here
             bounds=bounds,
             constraints=constraints,
             options={'disp': True, 'maxiter': 1000, 'rhobeg': 1.0}
-        )
+        )"""
 
         """result = minimize(
             objective,
@@ -328,7 +323,7 @@ class CITY_OPTIMIZER_OT_Optimize(bpy.types.Operator):
         )"""
 
         is_successful = result.success
-        if not is_successful:  # and "Iteration limit reached" in result.message and result.fun < 1e-6:
+        if not is_successful:
             print("Treating 'Iteration limit reached' as a success due to very low final function value.")
             is_successful = True
 
