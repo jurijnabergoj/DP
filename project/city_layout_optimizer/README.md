@@ -1,20 +1,9 @@
-# 🏙️ City Layout Optimization in Blender
+# City Layout Optimization in Blender
 
 This project implements a differentiable system for optimizing procedural city layouts using Blender and Python. It allows users to optimize building positions based on urban design objectives such as road avoidance, amenity proximity, building separation, and sunlight exposure. The optimization is implemented as a Blender add-on using SciPy's SLSQP optimizer.
 
----
 
-## ✨ Features
-
-- Blender-integrated city layout editor
-- Multi-objective, constraint-based optimization
-- Modular objective/constraint design (easily extendable)
-- Real-time visualization in Blender
-- PyTorch-based differentiable loss computation
-
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Install Dependencies
 
@@ -49,7 +38,7 @@ You can install the add-on by following these instructions:
 - Click Run Optimization to refine the layout
 
 
-### 📁 Project Structure
+### Project Structure
 ```bash
 city-layout-optimizer/
 ├── scripts/
